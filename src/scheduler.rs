@@ -20,7 +20,7 @@ impl Scheduler {
     fn dispatch_file(file: &PathBuf) -> Input {
         // FIXME: Cleanup
         match file.extension().unwrap().to_str() {
-            Some("yml") => Yaml::parse(&fs::read_to_string(file).unwrap()),
+            Some("yml") | Some("yaml") => Yaml::parse(&fs::read_to_string(file).unwrap()),
             Some(_) => panic!("Unhandled file format {}", file.to_str().unwrap()),
             None => panic!("Not a valid filename {}", file.to_str().unwrap()),
         }
