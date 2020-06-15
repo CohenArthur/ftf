@@ -7,7 +7,7 @@ pub struct Yaml {
 }
 
 impl FtInput for Yaml {
-    fn parse(data: String) -> Input {
+    fn parse(data: &str) -> Input {
         serde_yaml::from_str(&data).unwrap()
     }
 }
@@ -15,5 +15,22 @@ impl FtInput for Yaml {
 impl FtOutput for Yaml {
     fn fmt(data: &Output) -> String {
         serde_yaml::to_string(data).unwrap()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn deserialize() {
+        let data = r#"
+          name: "YAML test case"
+          cmd: "yaml_parser"
+        "#;
+
+        let input = Yaml::parse(data);
+
+        assert_eq!(input.name, "YAML test case");
     }
 }

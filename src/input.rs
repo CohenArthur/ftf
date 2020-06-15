@@ -10,13 +10,13 @@ use serde::Deserialize;
 pub struct Input {
     pub name: String,
     pub cmd: String,
-    pub args: Vec<String>,
+    pub args: Option<Vec<String>>,
     pub stdout: Option<String>,
     pub stderr: Option<String>,
-    pub exit_code: u8,
-    pub timeout: Duration,
+    pub exit_code: Option<u8>,
+    pub timeout: Option<Duration>,
 }
 
 pub trait FtInput {
-    fn parse(data: String) -> Input;
+    fn parse(data: &str) -> Input;
 }
