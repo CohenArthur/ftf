@@ -5,7 +5,7 @@ An input file should respect the following structure:
 ```yaml
 tests:
     - name: "Test name"
-      cmd: "binary to test"
+      binary: "binary to test"
       args:
         - "arg1"
         - "arg2"
@@ -18,7 +18,7 @@ Here is a list of options that `ft` can handle:
 |Option name|Type|Description|Default value|
 |---|---|---|---|
 |`name`|String|Name of the test|None|
-|`cmd`|String|Binary to test|None|
+|`binary`|String|Binary to test|None|
 |`args`|Array of Strings|Arguments to give to the tested binary|None|
 |`stdout`|String|What the test case should output on `stdout`|None|
 |`stderr`|String|What the test case should errput on `stderr`|None|
@@ -37,7 +37,7 @@ You would need to create the following YAML
 ```yaml
 tests:
     - name: "..."
-      cmd: "binary"
+      binary: "binary"
       args:
         - "arg0"
         - "arg1"

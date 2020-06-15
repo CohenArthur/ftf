@@ -6,14 +6,14 @@ use crate::output::Output;
 use std::time::Duration;
 
 pub struct Launcher {
-    cmd: String,
+    binary: String,
     args: Option<Vec<String>>,
     timeout: Duration,
 }
 
 impl Launcher {
-    pub fn new(cmd: String, args: Option<Vec<String>>, timeout: Duration) -> Launcher {
-        Launcher { cmd, args, timeout }
+    pub fn new(binary: String, args: Option<Vec<String>>, timeout: Duration) -> Launcher {
+        Launcher { binary, args, timeout }
     }
 
     pub fn run() -> Output {

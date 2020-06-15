@@ -7,7 +7,7 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct TestCase {
     pub name: String,
-    pub cmd: String,
+    pub binary: String,
     pub args: Option<Vec<String>>,
     pub stdout: Option<String>,
     pub stderr: Option<String>,
