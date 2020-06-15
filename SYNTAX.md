@@ -17,6 +17,7 @@ Here is a list of options that `ft` can handle:
 
 |Option name|Type|Description|Default value|
 |---|---|---|---|
+|`name`|String|Name of the test|None|
 |`cmd`|String|Binary to test|None|
 |`args`|Array of Strings|Arguments to give to the tested binary|None|
 |`stdout`|String|What the test case should output on `stdout`|None|
