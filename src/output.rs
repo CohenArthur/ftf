@@ -4,6 +4,9 @@
 
 use std::time::Duration;
 
+use serde::Serialize;
+
+#[derive(Serialize)]
 pub struct Output {
     exit_code: u8, // FIXME: Really a u8 ?
     stdout: String,
@@ -25,5 +28,5 @@ impl Output {
 // FIXME: Should take an Output and format it to whatever format wanted
 pub trait FtOutput {
     /// Format the Output results to a String
-    fn fmt(&self) -> String;
+    fn fmt(data: &Output) -> String;
 }

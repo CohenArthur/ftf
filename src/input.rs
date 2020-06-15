@@ -4,6 +4,9 @@
 
 use std::time::Duration;
 
+use serde::Deserialize;
+
+#[derive(Deserialize)]
 pub struct Input {
     pub name: String,
     pub cmd: String,
@@ -15,5 +18,5 @@ pub struct Input {
 }
 
 pub trait FtInput {
-    fn parse() -> Input;
+    fn parse(data: String) -> Input;
 }
