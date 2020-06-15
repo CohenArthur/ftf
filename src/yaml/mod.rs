@@ -44,8 +44,6 @@ mod tests {
             cmd: "yaml_parser"
             args:
                 - "yml0"
-                - "yml1"
-                - "yml2"
             stdout: "YAML Output"
             stderr: "YAML Errput"
             exit_code: 47
@@ -54,9 +52,32 @@ mod tests {
 
         let input = Yaml::parse(data);
 
-        assert_eq!(input.tests[0].stdout, Some(String::from("YAML Output")));
-        assert_eq!(input.tests[0].stderr, Some(String::from("YAML Errput")));
-        assert_eq!(input.tests[0].exit_code, Some(47));
-        assert_eq!(input.tests[0].timeout, Some(1600));
+        for test_case in input.tests {
+            assert_eq!(test_case.stdout, Some(String::from("YAML Output")));
+            assert_eq!(test_case.stderr, Some(String::from("YAML Errput")));
+            assert_eq!(test_case.exit_code, Some(47));
+            assert_eq!(test_case.timeout, Some(1600));
+            assert_eq!(test_case.args.unwrap()[0],"yml0");
+        }
+    }
+
+    #[test]
+    fn multiple_cases() {
+        let data = r#"
+        tests:
+          - name: "YAML test case"
+            cmd: "yaml_parser"
+
+          - name: "Second case"
+            cmd: "second_yaml"
+        "#;
+
+        let input = Yaml::parse(data);
+
+        assert_eq!(input.tests[0].name, "YAML test case");
+        assert_eq!(input.tests[0].cmd, "yaml_parser");
+
+        assert_eq!(input.tests[1].name, "Second case");
+        assert_eq!(input.tests[1].cmd, "second_yaml");
     }
 }
