@@ -22,6 +22,7 @@ impl Output {
     }
 }
 
+// FIXME: Should take an Output and format it to whatever format wanted
 pub trait FtOutput {
     /// Format the Output results to a String
     fn fmt(&self) -> String;
