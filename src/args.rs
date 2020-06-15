@@ -5,7 +5,7 @@ use structopt::StructOpt;
 #[derive(StructOpt)]
 pub struct FtArgs {
     #[structopt(short, long, help = "Files containing the test cases")]
-    files: Vec<PathBuf>,
+    pub files: Vec<PathBuf>,
 }
 
 impl FtArgs {

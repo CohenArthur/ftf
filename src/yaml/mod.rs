@@ -1,10 +1,9 @@
 //! The YAML module enables input and output from and to a YAML file.
 
-use crate::input::{Input, FtInput};
-use crate::output::{Output, FtOutput};
+use crate::input::{FtInput, Input};
+use crate::output::{FtOutput, Output};
 
-pub struct Yaml {
-}
+pub struct Yaml {}
 
 impl FtInput for Yaml {
     fn parse(data: &str) -> Input {
@@ -57,7 +56,7 @@ mod tests {
             assert_eq!(test_case.stderr, Some(String::from("YAML Errput")));
             assert_eq!(test_case.exit_code, Some(47));
             assert_eq!(test_case.timeout, Some(1600));
-            assert_eq!(test_case.args.unwrap()[0],"yml0");
+            assert_eq!(test_case.args.unwrap()[0], "yml0");
         }
     }
 

@@ -1,7 +1,7 @@
 mod args;
 mod input;
-mod output;
 mod launcher;
+mod output;
 mod scheduler;
 
 mod yaml;
