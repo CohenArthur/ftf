@@ -51,7 +51,7 @@ impl Scheduler {
     }
 
     // FIXME: Add scheduler
-    pub fn run() -> Vec<Output> {
+    pub fn run(&self) -> Vec<Output> {
         vec![Output::new(
             0,
             String::new(),
