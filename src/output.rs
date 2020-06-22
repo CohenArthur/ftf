@@ -8,10 +8,10 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct Output {
-    exit_code: u8, // FIXME: Really a u8 ?
-    stdout: String,
-    stderr: String,
-    time: Duration,
+    pub exit_code: u8, // FIXME: Really a u8 ?
+    pub stdout: String,
+    pub stderr: String,
+    pub time: Duration,
 }
 
 impl Output {
