@@ -20,7 +20,7 @@ Then, simply run `ft` on the files you created.
 * [ ] Assert on `stdout`
 * [ ] Assert on `stderr`
 * [ ] Assert on exit-code
-* [ ] Input from YAML
+* [x] Input from YAML
 * [ ] Input from JSON
 * [ ] YAML output
 * [ ] JSON output
