@@ -14,5 +14,10 @@ fn main() {
 
     let scheduler = Scheduler::from_args(&args);
 
+    let l = crate::launcher::Launcher::new("echo".to_owned(), Some(vec!["hello".to_owned()]), None);
+    let o = l.run();
+
+    dbg!(o);
+
     // FIXME: Add output
 }

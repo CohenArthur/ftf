@@ -36,13 +36,7 @@ impl Scheduler {
                 launchers.push(Launcher::new(
                     test_case.binary,
                     test_case.args,
-                    Duration::new(
-                        match test_case.timeout {
-                            Some(time) => time,
-                            None => 0,
-                        },
-                        0,
-                    ),
+                    test_case.timeout.map(Duration::from_secs),
                 ));
             }
         }

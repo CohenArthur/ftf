@@ -6,22 +6,38 @@ use std::time::Duration;
 
 use serde::Serialize;
 
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 pub struct Output {
-    exit_code: u8, // FIXME: Really a u8 ?
+    exit_code: i32,
     stdout: String,
     stderr: String,
     time: Duration,
 }
 
 impl Output {
-    pub fn new(exit_code: u8, stdout: String, stderr: String, time: Duration) -> Output {
+    pub fn new(exit_code: i32, stdout: String, stderr: String, time: Duration) -> Output {
         Output {
             exit_code,
             stdout,
             stderr,
             time,
         }
+    }
+
+    pub fn exit_code(&self) -> i32 {
+        self.exit_code
+    }
+
+    pub fn out(&self) -> &String {
+        &self.stdout
+    }
+
+    pub fn err(&self) -> &String {
+        &self.stderr
+    }
+
+    pub fn time(&self) -> &Duration {
+        &self.time
     }
 }
 
