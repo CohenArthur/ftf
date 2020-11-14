@@ -1,3 +1,6 @@
+use crate::yaml::Yaml;
+use crate::output::{Output, FtOutput};
+
 use std::path::PathBuf;
 
 use structopt::StructOpt;
@@ -9,11 +12,28 @@ pub struct FtArgs {
 
     // FIXME: Really add JSON and TOML format
     #[structopt(short, long, help = "Output format (yaml, json, toml)")]
-    pub output: String,
+    pub output: Option<String>,
 }
 
 impl FtArgs {
     pub fn collect() -> FtArgs {
         FtArgs::from_args()
+    }
+
+    pub fn get_formatter(&self) -> &dyn Fn(&Output) -> String {
+        match self.output.as_ref() {
+            Some(s) => match s.as_str() {
+                "yaml" => &Yaml::fmt,
+
+                // On invalid strings, use YAML but notify it
+                s => {
+                    eprintln!("Invalid formatter used: {}. Using YAML", s);
+                    &Yaml::fmt
+                }
+            }
+
+            // Default formatter is YAML
+            None => &Yaml::fmt,
+        }
     }
 }
