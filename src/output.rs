@@ -2,8 +2,6 @@
 //! To add an output format, simply implement the FtOutput trait. This is what
 //! is done by YmlOutput and JsonOutput for example
 
-// FIXME: Add more documentation
-
 use std::time::Duration;
 
 use crate::args::FtArgs;
@@ -15,6 +13,8 @@ use serde::Serialize;
 pub static INVALID_EXIT: i32 = 1;
 
 #[derive(Debug, Serialize)]
+/// Output structure, contains what was expected and what has been output by the
+/// command
 pub struct Output {
     name: String,
     exit_code: ExpGot<i32>,
@@ -24,6 +24,7 @@ pub struct Output {
 }
 
 impl Output {
+    /// Create a new output using `ExpGot`s.
     pub fn new(
         name: String,
         exit_code: ExpGot<i32>,
@@ -40,8 +41,7 @@ impl Output {
         }
     }
 
-    // FIXME: Doc
-    pub fn valid(&self) -> bool {
+    fn valid(&self) -> bool {
         let mut retval = self.exit_code.expected.unwrap_or(0) == self.exit_code.got;
 
         retval = if retval { self.stdout.eq() } else { retval };
@@ -51,7 +51,12 @@ impl Output {
         retval
     }
 
-    // FIXME: Use args
+    /// Display the output of a command accordingly, with the following format:
+    ///
+    /// <test name>: [ OK | KO ]
+    ///
+    /// In case of KO, the complete output will be dumped using the format passed
+    /// to `ft` with the `-o|--output` argument
     pub fn display(&self, args: &FtArgs, retval: &mut i32) {
         let mut res_string = "OK".green();
         let is_valid = self.valid();

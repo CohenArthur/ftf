@@ -1,3 +1,5 @@
+//! FtArgs handle argument parsing for the `ft` binary
+
 use crate::output::{FtOutput, Output};
 use crate::yaml::Yaml;
 

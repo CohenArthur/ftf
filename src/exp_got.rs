@@ -1,4 +1,6 @@
-//FIXME: Add documentation
+//! `ExpGot`s are used to represent what was expected, and what was received. If
+//! nothing was expected, then any output will be valid. If something was expected, then
+//! what was received must match
 
 use serde::Serialize;
 
@@ -9,10 +11,12 @@ pub struct ExpGot<T: PartialEq> {
 }
 
 impl<T: PartialEq> ExpGot<T> {
+    /// Create a new ExpGot
     pub fn new(expected: Option<T>, got: T) -> ExpGot<T> {
         ExpGot { expected, got }
     }
 
+    /// Check if the content of the ExpGot match
     pub fn eq(&self) -> bool {
         match &self.expected {
             Some(s) => s == &self.got,
