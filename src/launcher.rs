@@ -59,7 +59,12 @@ impl Launcher {
         child.stdout.unwrap().read_to_string(&mut out)?;
         child.stderr.unwrap().read_to_string(&mut err)?;
 
-        Ok(Output::new(status_code.unwrap_or(INVALID_EXIT), out, err, start.elapsed()))
+        Ok(Output::new(
+            status_code.unwrap_or(INVALID_EXIT),
+            out,
+            err,
+            start.elapsed(),
+        ))
     }
 }
 
@@ -82,8 +87,20 @@ mod tests {
         let l = Launcher::new("sleep".to_owned(), Some(vec!["2".to_owned()]), None);
         let o = l.run().unwrap();
 
-
         assert_eq!(o.exit_code(), 0);
         assert_eq!(o.time().as_secs(), 2);
+    }
+
+    #[test]
+    fn sleep_with_shorter_timeout() {
+        let l = Launcher::new(
+            "sleep".to_owned(),
+            Some(vec!["2".to_owned()]),
+            Some(Duration::from_secs(1)),
+        );
+        let o = l.run().unwrap();
+
+        assert_ne!(o.exit_code(), 0);
+        assert_eq!(o.time().as_secs(), 1);
     }
 }
