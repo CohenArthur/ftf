@@ -1,5 +1,5 @@
+use crate::output::{FtOutput, Output};
 use crate::yaml::Yaml;
-use crate::output::{Output, FtOutput};
 
 use std::path::PathBuf;
 
@@ -30,7 +30,7 @@ impl FtArgs {
                     eprintln!("Invalid formatter used: {}. Using YAML", s);
                     &Yaml::fmt
                 }
-            }
+            },
 
             // Default formatter is YAML
             None => &Yaml::fmt,
