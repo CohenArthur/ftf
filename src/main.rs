@@ -1,4 +1,5 @@
 mod args;
+mod exp_got;
 mod input;
 mod launcher;
 mod output;
@@ -13,6 +14,11 @@ fn main() {
     let args = FtArgs::collect();
 
     let scheduler = Scheduler::from_args(&args);
+    let outputs = scheduler.run();
 
-    // FIXME: Add output
+    let mut retval = 0;
+
+    outputs.iter().for_each(|o| o.display(&args, &mut retval));
+
+    std::process::exit(retval);
 }

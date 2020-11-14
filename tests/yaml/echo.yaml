@@ -1,0 +1,17 @@
+tests:
+  - name: "Generic echo with args"
+    binary: "echo"
+    args:
+      - "-n"
+      - "yay"
+      - "something"
+    stdout: "yay something"
+
+  - name: "Simple printf"
+    binary: "printf"
+    args:
+      - "%s %d %d"
+      - "hey"
+      - 1
+      - 2
+    stdout: "hey 1 2"
