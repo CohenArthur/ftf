@@ -26,13 +26,13 @@ mod tests {
         let data = r#"
         tests:
           - name: "YAML test case"
-            binary: "yaml_parser"
+            executable: "yaml_parser"
         "#;
 
         let input = Yaml::parse(data);
 
         assert_eq!(input.tests[0].name, "YAML test case");
-        assert_eq!(input.tests[0].binary, "yaml_parser");
+        assert_eq!(input.tests[0].executable, "yaml_parser");
     }
 
     #[test]
@@ -40,7 +40,7 @@ mod tests {
         let data = r#"
         tests:
           - name: "YAML test case"
-            binary: "yaml_parser"
+            executable: "yaml_parser"
             args:
                 - "yml0"
             stdout: "YAML Output"
@@ -65,18 +65,18 @@ mod tests {
         let data = r#"
         tests:
           - name: "YAML test case"
-            binary: "yaml_parser"
+            executable: "yaml_parser"
 
           - name: "Second case"
-            binary: "second_yaml"
+            executable: "second_yaml"
         "#;
 
         let input = Yaml::parse(data);
 
         assert_eq!(input.tests[0].name, "YAML test case");
-        assert_eq!(input.tests[0].binary, "yaml_parser");
+        assert_eq!(input.tests[0].executable, "yaml_parser");
 
         assert_eq!(input.tests[1].name, "Second case");
-        assert_eq!(input.tests[1].binary, "second_yaml");
+        assert_eq!(input.tests[1].executable, "second_yaml");
     }
 }

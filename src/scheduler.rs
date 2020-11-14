@@ -34,7 +34,7 @@ impl Scheduler {
 
             for test_case in input.tests {
                 launchers.push(Launcher::new(
-                    test_case.binary,
+                    test_case.executable,
                     test_case.args,
                     Duration::new(
                         match test_case.timeout {
