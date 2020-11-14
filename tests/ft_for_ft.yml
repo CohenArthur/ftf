@@ -1,0 +1,18 @@
+tests:
+    - name: "Compile ft"
+      binary: "cargo"
+      args:
+        - "build"
+
+    - name: "Valid echo"
+      binary: "./target/debug/ft"
+      args:
+        - "-f"
+        - "./tests/fixtures/yaml/echo.yaml"
+
+    - name: "Invalid echo"
+      binary: "./target/debug/ft"
+      args:
+        - "-f"
+        - "./tests/fixtures/yaml/invalid_echo.yaml"
+      exit_code: 1

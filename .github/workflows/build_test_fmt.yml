@@ -20,7 +20,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build ft
       run: |
-          rustup default nightly
           cargo build
 
   tests:
@@ -31,5 +30,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run Unit Tests and Documentation examples
       run: |
-          rustup default nightly
           cargo test
+    - name: Run Functional Tests
+      run: |
+          cargo run -- -f tests/ft_for_ft.yml
