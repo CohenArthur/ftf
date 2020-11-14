@@ -8,11 +8,7 @@ mod scheduler;
 mod yaml;
 
 use args::FtArgs;
-use output::FtOutput;
 use scheduler::Scheduler;
-use yaml::Yaml;
-
-use colored::Colorize;
 
 fn main() {
     let args = FtArgs::collect();
