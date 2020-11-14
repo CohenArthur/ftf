@@ -103,4 +103,23 @@ mod tests {
         assert_ne!(o.exit_code(), 0);
         assert_eq!(o.time().as_secs(), 1);
     }
+
+    #[test]
+    fn piped() {
+        let l = Launcher::new(
+            "echo".to_owned(),
+            Some(
+                "hello | wc -l"
+                    .to_owned()
+                    .split(' ')
+                    .map(|s| s.to_owned())
+                    .collect::<Vec<String>>(),
+            ),
+            None,
+        );
+        let o = l.run().unwrap();
+
+        assert_ne!(o.exit_code(), 0);
+        assert_ne!(o.out(), "1");
+    }
 }
