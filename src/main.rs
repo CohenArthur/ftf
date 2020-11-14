@@ -1,4 +1,5 @@
 mod args;
+mod exp_got;
 mod input;
 mod launcher;
 mod output;
@@ -7,17 +8,21 @@ mod scheduler;
 mod yaml;
 
 use args::FtArgs;
+use output::FtOutput;
 use scheduler::Scheduler;
+use yaml::Yaml;
+
+use colored::Colorize;
 
 fn main() {
     let args = FtArgs::collect();
 
     let scheduler = Scheduler::from_args(&args);
+    let outputs = scheduler.run();
 
-    let l = crate::launcher::Launcher::new("echo".to_owned(), Some(vec!["hello".to_owned()]), None);
-    let o = l.run();
+    let mut retval = 0;
 
-    dbg!(o);
+    outputs.iter().for_each(|o| o.display(&args, &mut retval));
 
-    // FIXME: Add output
+    std::process::exit(retval);
 }

@@ -34,8 +34,12 @@ impl Scheduler {
 
             for test_case in input.tests {
                 launchers.push(Launcher::new(
+                    test_case.name,
                     test_case.binary,
                     test_case.args,
+                    test_case.stdout,
+                    test_case.stderr,
+                    test_case.exit_code.map(|v| v as i32),
                     test_case.timeout.map(Duration::from_secs),
                 ));
             }
@@ -44,13 +48,11 @@ impl Scheduler {
         Scheduler { launchers }
     }
 
-    // FIXME: Add scheduler
     pub fn run(&self) -> Vec<Output> {
-        vec![Output::new(
-            0,
-            String::new(),
-            String::new(),
-            std::time::Duration::new(5, 0),
-        )]
+        // FIXME: Don't unwrap
+        self.launchers
+            .iter()
+            .map(|launcher| launcher.run().unwrap())
+            .collect()
     }
 }

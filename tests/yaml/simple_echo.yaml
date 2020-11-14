@@ -1,0 +1,19 @@
+tests:
+  - name: "Simple echo"
+    binary: "echo"
+    args:
+      - "yml"
+    stdout: "yml\n"
+
+  - name: "Simple echo with explicit path and error"
+    binary: "/bin/echo"
+    args:
+      - "yml"
+    stdout: "yml\n"
+    stderr: "something"
+
+  - name: "One more error"
+    binary: "echo"
+    args:
+      - "yml"
+    stdout: "An error"
