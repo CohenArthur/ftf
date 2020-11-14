@@ -14,9 +14,35 @@ impl<T: PartialEq> ExpGot<T> {
     }
 
     pub fn eq(&self) -> bool {
-        match &eg.expected {
-            Some(s) => s == &eg.got,
+        match &self.expected {
+            Some(s) => s == &self.got,
             None => true,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn eq_true() {
+        let eg = ExpGot::new(Some("exp_got"), "exp_got");
+
+        assert!(eg.eq())
+    }
+
+    #[test]
+    fn eq_true_with_none() {
+        let eg = ExpGot::new(None, "exp_got");
+
+        assert!(eg.eq())
+    }
+
+    #[test]
+    fn eq_false() {
+        let eg = ExpGot::new(Some("got exp"), "exp_got");
+
+        assert!(!eg.eq())
     }
 }

@@ -68,11 +68,6 @@ impl Output {
     }
 
     #[cfg(test)]
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    #[cfg(test)]
     pub fn exit_code(&self) -> i32 {
         self.exit_code.got
     }
