@@ -131,10 +131,10 @@ mod tests {
             "sleep".to_owned(),
             "sleep".to_owned(),
             Some(vec!["2".to_owned()]),
+            None,
+            None,
+            None,
             Some(Duration::from_secs(1)),
-            None,
-            None,
-            None,
         );
         let o = l.run().unwrap();
 

@@ -8,12 +8,11 @@ use std::time::Duration;
 
 use crate::args::FtArgs;
 use crate::exp_got::ExpGot;
-use crate::yaml::Yaml;
 
 use colored::Colorize;
 use serde::Serialize;
 
-pub static INVALID_EXIT: i32 = std::i32::MIN;
+pub static INVALID_EXIT: i32 = 1;
 
 #[derive(Debug, Serialize)]
 pub struct Output {
@@ -45,32 +44,9 @@ impl Output {
     pub fn valid(&self) -> bool {
         let mut retval = self.exit_code.expected.unwrap_or(0) == self.exit_code.got;
 
-        retval = if retval {
-            match &self.stdout.expected {
-                Some(s) => s == &self.stdout.got,
-                None => true,
-            }
-        } else {
-            retval
-        };
-
-        retval = if retval {
-            match &self.stderr.expected {
-                Some(s) => s == &self.stderr.got,
-                None => true,
-            }
-        } else {
-            retval
-        };
-
-        retval = if retval {
-            match self.time.expected {
-                Some(s) => s == self.time.got,
-                None => true,
-            }
-        } else {
-            retval
-        };
+        retval = if retval { self.stdout.eq() } else { retval };
+        retval = if retval { self.stderr.eq() } else { retval };
+        retval = if retval { self.time.eq() } else { retval };
 
         retval
     }
@@ -87,13 +63,8 @@ impl Output {
 
         println!("{}: [{}]", self.name, res_string);
         if !is_valid {
-            eprintln!("{}", Yaml::fmt(self));
+            eprintln!("{}", args.get_formatter()(self));
         }
-    }
-
-    #[cfg(test)]
-    pub fn name(&self) -> &str {
-        &self.name
     }
 
     #[cfg(test)]
