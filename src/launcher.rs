@@ -1,13 +1,13 @@
 //! The Launcher module is the one responsible for executing the different
 //! test cases and reporting the results
 
+use std::io::Read;
 use std::process::{Command, Stdio};
 use std::time::{Duration, Instant};
-use std::io::Read;
 
 use wait_timeout::ChildExt;
 
-use crate::output::Output;
+use crate::output::{Output, INVALID_EXIT};
 
 static MAX_SECS: u64 = u64::MAX;
 
@@ -34,43 +34,32 @@ impl Launcher {
         self.args.as_ref()
     }
 
-    pub fn run(&self) -> Output {
+    pub fn run(&self) -> Result<Output, std::io::Error> {
         let start = Instant::now();
 
-        // FIXME: Don't unwrap
         let mut child = Command::new(self.binary())
             .args(self.args().unwrap_or(&vec![]))
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
-            .spawn()
-            .unwrap();
+            .spawn()?;
 
         let max_duration = Duration::from_secs(MAX_SECS);
 
-        // FIXME: Don't unwrap
-        let status_code = match child
-            .wait_timeout(self.timeout.unwrap_or(max_duration))
-            .unwrap()
-        {
+        let status_code = match child.wait_timeout(self.timeout.unwrap_or(max_duration))? {
             Some(status) => status.code(),
             None => {
-                child.kill().unwrap();
-                child.wait().unwrap().code()
+                child.kill()?;
+                child.wait()?.code()
             }
         };
 
         let (mut out, mut err) = (String::new(), String::new());
 
         // FIXME: No unwrap
-        child.stdout.unwrap().read_to_string(&mut out).unwrap();
-        child.stderr.unwrap().read_to_string(&mut err).unwrap();
+        child.stdout.unwrap().read_to_string(&mut out)?;
+        child.stderr.unwrap().read_to_string(&mut err)?;
 
-        Output::new(
-            status_code.unwrap(),
-            out,
-            err,
-            start.elapsed(), // FIXME: Check if time is valid
-        )
+        Ok(Output::new(status_code.unwrap_or(INVALID_EXIT), out, err, start.elapsed()))
     }
 }
 
@@ -81,17 +70,18 @@ mod tests {
     #[test]
     fn echo() {
         let l = Launcher::new("echo".to_owned(), Some(vec!["hello".to_owned()]), None);
-        let o = l.run();
+        let o = l.run().unwrap();
 
         assert_eq!(o.exit_code(), 0);
         assert_eq!(o.out(), "hello\n");
         assert_eq!(o.err(), "");
     }
- 
+
     #[test]
     fn sleep_2() {
         let l = Launcher::new("sleep".to_owned(), Some(vec!["2".to_owned()]), None);
-        let o = l.run();
+        let o = l.run().unwrap();
+
 
         assert_eq!(o.exit_code(), 0);
         assert_eq!(o.time().as_secs(), 2);

@@ -6,6 +6,8 @@ use std::time::Duration;
 
 use serde::Serialize;
 
+pub static INVALID_EXIT: i32 = std::i32::MIN;
+
 #[derive(Debug, Serialize)]
 pub struct Output {
     exit_code: i32,
