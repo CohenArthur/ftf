@@ -16,11 +16,13 @@ Then, simply run `ft` on the files you created.
 # Features
 
 * [ ] Parallel execution
-* [ ] Timeout
-* [ ] Assert on `stdout`
-* [ ] Assert on `stderr`
-* [ ] Assert on exit-code
+* [x] Timeout
+* [x] Assert on `stdout`
+* [x] Assert on `stderr`
+* [x] Assert on exit-code
 * [x] Input from YAML
 * [ ] Input from JSON
-* [ ] YAML output
+* [ ] Input from TOML
+* [x] YAML output
 * [ ] JSON output
+* [ ] TOML output
