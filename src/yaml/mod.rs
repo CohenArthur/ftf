@@ -3,7 +3,7 @@
 use crate::input::{FtInput, Input};
 use crate::output::{FtOutput, Output};
 
-pub struct Yaml {}
+pub struct Yaml;
 
 impl FtInput for Yaml {
     fn parse(data: &str) -> Input {
