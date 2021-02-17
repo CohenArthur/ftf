@@ -66,7 +66,7 @@ impl Output {
             res_string = "KO".red();
         }
 
-        println!("{}: [{}]", self.name, res_string);
+        println!("[{}] {}", res_string, self.name);
         if !is_valid {
             eprintln!("{}", args.get_formatter()(self));
         }
