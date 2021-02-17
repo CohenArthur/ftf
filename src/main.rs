@@ -31,7 +31,11 @@ fn main() {
         }
     });
 
-    println!("{} tests passed, {} tests failed", passed.to_string().green(), failed.to_string().red());
+    println!(
+        "{} tests passed, {} tests failed",
+        passed.to_string().green(),
+        failed.to_string().red()
+    );
 
     std::process::exit(retval);
 }
