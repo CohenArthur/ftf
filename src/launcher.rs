@@ -139,6 +139,6 @@ mod tests {
         let o = l.run().unwrap();
 
         assert_ne!(o.exit_code_got(), 0);
-        assert_eq!(o.time().as_secs(), 1);
+        assert!(o.time().as_secs() <= 1);
     }
 }
