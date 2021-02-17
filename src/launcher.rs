@@ -103,7 +103,7 @@ mod tests {
         );
         let o = l.run().unwrap();
 
-        assert_eq!(o.exit_code(), 0);
+        assert_eq!(o.exit_code_got(), 0);
         assert_eq!(o.out(), "hello\n");
         assert_eq!(o.err(), "");
     }
@@ -121,7 +121,7 @@ mod tests {
         );
         let o = l.run().unwrap();
 
-        assert_eq!(o.exit_code(), 0);
+        assert_eq!(o.exit_code_got(), 0);
         assert_eq!(o.time().as_secs(), 2);
     }
 
@@ -138,7 +138,7 @@ mod tests {
         );
         let o = l.run().unwrap();
 
-        assert_ne!(o.exit_code(), 0);
-        assert_eq!(o.time().as_secs(), 1);
+        assert_ne!(o.exit_code_got(), 0);
+        assert!(o.time().as_secs() <= 1);
     }
 }

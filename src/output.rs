@@ -72,8 +72,12 @@ impl Output {
         }
     }
 
+    pub fn exit_code(&self) -> &ExpGot<i32> {
+        &self.exit_code
+    }
+
     #[cfg(test)]
-    pub fn exit_code(&self) -> i32 {
+    pub fn exit_code_got(&self) -> i32 {
         self.exit_code.got
     }
 
