@@ -26,3 +26,13 @@ Then, simply run `ft` on the files you created.
 * [x] YAML output
 * [ ] JSON output
 * [ ] TOML output
+
+# Installation
+
+If you have `rust` and its build system, `cargo`, installed, simply run:
+`cargo install --git https://github.com/cohenarthur/ft`
+
+To install `rust`, first visit [the getting started page](https://www.rust-lang.org/learn/get-started)
+
+You can also download a release of `ft` from [the release page](https://github.com/CohenArthur/ft/releases).
+The binaries are compiled for x86_64 systems.
