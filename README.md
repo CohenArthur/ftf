@@ -30,7 +30,9 @@ Then, simply run `ft` on the files you created.
 # Installation
 
 If you have `rust` and its build system, `cargo`, installed, simply run:
-`cargo install --git https://github.com/cohenarthur/ft`
+```sh
+> cargo install --git https://github.com/cohenarthur/ft
+```
 
 To install `rust`, first visit [the getting started page](https://www.rust-lang.org/learn/get-started)
 
