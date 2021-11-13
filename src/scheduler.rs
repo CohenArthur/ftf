@@ -2,8 +2,8 @@
 //! to wait for.
 
 use crate::yaml::Yaml;
-
 use crate::args::FtArgs;
+use crate::error::Error;
 use crate::input::{FtInput, Input};
 use crate::launcher::Launcher;
 use crate::output::Output;
@@ -17,20 +17,20 @@ pub struct Scheduler {
 }
 
 impl Scheduler {
-    fn dispatch_file(file: &PathBuf) -> Input {
+    fn dispatch_file(file: &PathBuf) -> Result<Input, Error> {
         // FIXME: Cleanup
         match file.extension().unwrap().to_str() {
-            Some("yml") | Some("yaml") => Yaml::parse(&fs::read_to_string(file).unwrap()),
-            Some(_) => panic!("Unhandled file format {}", file.to_str().unwrap()),
-            None => panic!("Not a valid filename {}", file.to_str().unwrap()),
+            Some("yml") | Some("yaml") => Ok(Yaml::parse(&fs::read_to_string(file).unwrap())),
+            Some(_) => Err(Error::UnhandledFormat(file.clone().into_os_string())),
+            None => Err(Error::InvalidFileName(file.clone().into_os_string())),
         }
     }
 
-    pub fn from_args(args: &FtArgs) -> Scheduler {
+    pub fn from_args(args: &FtArgs) -> Result<Scheduler, Error> {
         let mut launchers = Vec::new();
 
         for file in &args.files {
-            let input = Scheduler::dispatch_file(&file);
+            let input = Scheduler::dispatch_file(&file)?;
 
             for test_case in input.tests {
                 launchers.push(Launcher::new(
@@ -45,7 +45,7 @@ impl Scheduler {
             }
         }
 
-        Scheduler { launchers }
+        Ok(Scheduler { launchers })
     }
 
     pub fn run(&self) -> Vec<Output> {

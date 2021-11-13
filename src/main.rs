@@ -1,4 +1,5 @@
 mod args;
+mod error;
 mod exp_got;
 mod input;
 mod launcher;
@@ -8,14 +9,15 @@ mod scheduler;
 mod yaml;
 
 use colored::Colorize;
+use anyhow::Result;
 
 use args::FtArgs;
 use scheduler::Scheduler;
 
-fn main() {
+fn main() -> Result<()> {
     let args = FtArgs::collect();
 
-    let scheduler = Scheduler::from_args(&args);
+    let scheduler = Scheduler::from_args(&args)?;
     let outputs = scheduler.run();
 
     let mut retval = 0;
