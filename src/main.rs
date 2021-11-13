@@ -9,11 +9,11 @@ mod yaml;
 
 use colored::Colorize;
 
-use args::FtArgs;
+use args::Args;
 use scheduler::Scheduler;
 
 fn main() {
-    let args = FtArgs::collect();
+    let args = Args::collect();
 
     let scheduler = Scheduler::from_args(&args);
     let outputs = scheduler.run();
