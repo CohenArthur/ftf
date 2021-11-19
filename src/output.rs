@@ -4,7 +4,7 @@
 
 use std::time::Duration;
 
-use crate::args::FtArgs;
+use crate::args::Args;
 use crate::exp_got::ExpGot;
 
 use colored::Colorize;
@@ -57,7 +57,7 @@ impl Output {
     ///
     /// In case of KO, the complete output will be dumped using the format passed
     /// to `ft` with the `-o|--output` argument
-    pub fn display(&self, args: &FtArgs, retval: &mut i32) {
+    pub fn display(&self, args: &Args, retval: &mut i32) {
         let mut res_string = "OK".green();
         let is_valid = self.valid();
 

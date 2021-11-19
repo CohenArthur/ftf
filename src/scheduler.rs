@@ -3,7 +3,7 @@
 
 use crate::yaml::Yaml;
 
-use crate::args::FtArgs;
+use crate::args::Args;
 use crate::input::{FtInput, Input};
 use crate::launcher::Launcher;
 use crate::output::Output;
@@ -26,7 +26,7 @@ impl Scheduler {
         }
     }
 
-    pub fn from_args(args: &FtArgs) -> Scheduler {
+    pub fn from_args(args: &Args) -> Scheduler {
         let mut launchers = Vec::new();
 
         for file in &args.files {

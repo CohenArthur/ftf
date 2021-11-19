@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
-pub struct FtArgs {
+pub struct Args {
     #[structopt(short, long, help = "Files containing the test cases")]
     pub files: Vec<PathBuf>,
 
@@ -17,9 +17,9 @@ pub struct FtArgs {
     pub output: Option<String>,
 }
 
-impl FtArgs {
-    pub fn collect() -> FtArgs {
-        FtArgs::from_args()
+impl Args {
+    pub fn collect() -> Args {
+        Args::from_args()
     }
 
     pub fn get_formatter(&self) -> &dyn Fn(&Output) -> String {
