@@ -5,7 +5,7 @@ authors = ["cohenarthur <arthur.cohen@epita.fr>"]
 edition = "2018"
 license-file = "LICENSE.md"
 description = "Run functional tests from a variety of formats"
-repository = "https://github.com/cohenarthur/ft"
+repository = "https://github.com/cohenarthur/ftf"
 keywords = ["tests", "yaml", "functional"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

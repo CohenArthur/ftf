@@ -1,17 +1,17 @@
 tests:
-    - name: "Compile ft"
+    - name: "Compile ftf"
       binary: "cargo"
       args:
         - "build"
 
     - name: "Valid echo"
-      binary: "./target/debug/ft"
+      binary: "./target/debug/ftf"
       args:
         - "-f"
         - "./tests/fixtures/yaml/echo.yaml"
 
     - name: "Invalid echo"
-      binary: "./target/debug/ft"
+      binary: "./target/debug/ftf"
       args:
         - "-f"
         - "./tests/fixtures/yaml/invalid_echo.yaml"
