@@ -1,11 +1,11 @@
 //! The YAML module enables input and output from and to a YAML file.
 
-use crate::input::{FtInput, Input};
+use crate::input::{Input, Inputter};
 use crate::output::{FtOutput, Output};
 
 pub struct Yaml;
 
-impl FtInput for Yaml {
+impl Inputter for Yaml {
     fn parse(data: &str) -> Input {
         serde_yaml::from_str(&data).unwrap()
     }

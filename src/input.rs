@@ -1,6 +1,6 @@
 //! Transforms the written test cases from whatever data language was used
 //! to conditions that `ft` understands. Add any language by implementing
-//! the FtInput trait
+//! the Inputter trait
 
 use serde::Deserialize;
 
@@ -20,6 +20,6 @@ pub struct Input {
     pub tests: Vec<TestCase>,
 }
 
-pub trait FtInput {
+pub trait Inputter {
     fn parse(data: &str) -> Input;
 }

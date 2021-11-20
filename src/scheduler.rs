@@ -4,7 +4,7 @@
 use crate::yaml::Yaml;
 
 use crate::args::Args;
-use crate::input::{FtInput, Input};
+use crate::input::{Input, Inputter};
 use crate::launcher::Launcher;
 use crate::output::Output;
 
