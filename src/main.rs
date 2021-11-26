@@ -1,29 +1,25 @@
 mod args;
-mod exp_got;
-mod input;
-mod launcher;
-mod output;
-mod scheduler;
-
-mod yaml;
-
-use colored::Colorize;
 
 use args::Args;
-use scheduler::Scheduler;
 
-fn main() {
+use anyhow::Result;
+use colored::Colorize;
+use ftf::Scheduler;
+
+fn main() -> Result<()> {
     let args = Args::collect();
 
-    let scheduler = Scheduler::from_args(&args);
+    let scheduler = Scheduler::from_files(&args.files);
     let outputs = scheduler.run();
 
     let mut retval = 0;
     let mut passed = 0;
     let mut failed = 0;
 
+    let formatter = ftf::get_formatter(&args.output)?;
+
     outputs.iter().for_each(|o| {
-        o.display(&args, &mut retval);
+        o.display(&formatter, &mut retval);
 
         match o.exit_code().eq() {
             true => passed += 1,

@@ -27,7 +27,7 @@ impl Launcher {
     pub fn new(
         name: String,
         binary: String,
-        args: Option<Vec<String>>,
+        args: Option<Vec<String>>, // FIXME: maybe we could just leave it be an empty vector
         stdout: Option<String>,
         stderr: Option<String>,
         exit_code: Option<i32>,

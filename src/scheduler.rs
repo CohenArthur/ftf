@@ -3,13 +3,11 @@
 
 use crate::yaml::Yaml;
 
-use crate::args::Args;
 use crate::input::{Input, Inputter};
 use crate::launcher::Launcher;
 use crate::output::Output;
-
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 pub struct Scheduler {
@@ -17,7 +15,7 @@ pub struct Scheduler {
 }
 
 impl Scheduler {
-    fn dispatch_file(file: &PathBuf) -> Input {
+    fn dispatch_file(file: &Path) -> Input {
         // FIXME: Cleanup
         match file.extension().unwrap().to_str() {
             Some("yml") | Some("yaml") => Yaml::parse(&fs::read_to_string(file).unwrap()),
@@ -26,10 +24,10 @@ impl Scheduler {
         }
     }
 
-    pub fn from_args(args: &Args) -> Scheduler {
+    pub fn from_files(files: &[PathBuf]) -> Scheduler {
         let mut launchers = Vec::new();
 
-        for file in &args.files {
+        for file in files {
             let input = Scheduler::dispatch_file(&file);
 
             for test_case in input.tests {
@@ -50,6 +48,7 @@ impl Scheduler {
 
     pub fn run(&self) -> Vec<Output> {
         // FIXME: Don't unwrap
+        // FIXME: actually implement a cool scheduler (parallelism, CFS (red-black trees), etc...)
         self.launchers
             .iter()
             .map(|launcher| launcher.run().unwrap())

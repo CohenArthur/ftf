@@ -4,8 +4,7 @@
 
 use std::time::Duration;
 
-use crate::args::Args;
-use crate::exp_got::ExpGot;
+use crate::{exp_got::ExpGot, Formatter};
 
 use colored::Colorize;
 use serde::Serialize;
@@ -57,7 +56,7 @@ impl Output {
     ///
     /// In case of KO, the complete output will be dumped using the format passed
     /// to `ft` with the `-o|--output` argument
-    pub fn display(&self, args: &Args, retval: &mut i32) {
+    pub fn display(&self, formatter: &Formatter, retval: &mut i32) {
         let mut res_string = "OK".green();
         let is_valid = self.valid();
 
@@ -68,7 +67,7 @@ impl Output {
 
         println!("[{}] {}", res_string, self.name);
         if !is_valid {
-            eprintln!("{}", args.get_formatter()(self));
+            eprintln!("{}", formatter(self));
         }
     }
 
