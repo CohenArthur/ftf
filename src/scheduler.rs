@@ -52,9 +52,9 @@ impl Scheduler {
         Ok(Scheduler { launchers })
     }
 
-    pub fn run(&self) -> Result<Vec<Output>, Error> {
+    pub fn run(self) -> Result<Vec<Output>, Error> {
         self.launchers
-            .iter()
+            .into_iter()
             .map(|launcher| launcher.run())
             .collect()
     }
