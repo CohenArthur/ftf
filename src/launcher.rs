@@ -78,7 +78,10 @@ impl Launcher {
         // FIXME: No clone
         Ok(Output::new(
             self.name.clone(),
-            ExpGot::new(self.exit_code, status_code.unwrap_or(INVALID_EXIT)),
+            ExpGot::new(
+                Some(self.exit_code.unwrap_or(0)),
+                status_code.unwrap_or(INVALID_EXIT),
+            ),
             ExpGot::new(self.stdout.clone(), out),
             ExpGot::new(self.stderr.clone(), err),
             ExpGot::new(self.timeout, start.elapsed()),
