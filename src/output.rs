@@ -4,7 +4,6 @@
 
 use std::time::Duration;
 
-use crate::args::Args;
 use crate::error::Error;
 use crate::exp_got::ExpGot;
 

@@ -40,7 +40,7 @@ impl Scheduler {
                     test_case.name,
                     test_case.binary,
                     // If there are no arguments, pass an empty vector
-                    test_case.args.unwrap_or(vec![]),
+                    test_case.args.unwrap_or_default(),
                     test_case.stdout,
                     test_case.stderr,
                     test_case.exit_code.map(|v| v as i32),

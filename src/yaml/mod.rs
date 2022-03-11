@@ -8,7 +8,7 @@ pub struct Yaml;
 
 impl Inputter for Yaml {
     fn parse(data: &str) -> Result<Input, Error> {
-        Ok(serde_yaml::from_str(&data)?)
+        Ok(serde_yaml::from_str(data)?)
     }
 }
 

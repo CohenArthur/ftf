@@ -9,7 +9,8 @@ use wait_timeout::ChildExt;
 
 use crate::error::Error;
 use crate::exp_got::ExpGot;
-use crate::output::{Output, INVALID_EXIT};
+use crate::output::Output;
+use crate::INVALID_EXIT;
 
 static MAX_SECS: u64 = u64::MAX;
 
@@ -106,7 +107,7 @@ mod tests {
         let l = Launcher::new(
             "echo".to_owned(),
             "echo".to_owned(),
-            Some(vec!["hello".to_owned()]),
+            vec!["hello".to_owned()],
             None,
             None,
             None,
@@ -124,7 +125,7 @@ mod tests {
         let l = Launcher::new(
             "sleep".to_owned(),
             "sleep".to_owned(),
-            Some(vec!["2".to_owned()]),
+            vec!["2".to_owned()],
             None,
             None,
             None,
@@ -141,7 +142,7 @@ mod tests {
         let l = Launcher::new(
             "sleep".to_owned(),
             "sleep".to_owned(),
-            Some(vec!["2".to_owned()]),
+            vec!["2".to_owned()],
             None,
             None,
             None,
