@@ -1,6 +1,6 @@
 [package]
 name = "ftf"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["cohenarthur <arthur.cohen@epita.fr>"]
 edition = "2018"
 license-file = "LICENSE.md"
