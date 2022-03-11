@@ -13,6 +13,8 @@ use colored::Colorize;
 use args::Args;
 use scheduler::Scheduler;
 
+const INVALID_EXIT: i32 = 1;
+
 fn main() -> anyhow::Result<()> {
     let args = Args::collect();
 
@@ -22,7 +24,16 @@ fn main() -> anyhow::Result<()> {
     let mut retval = 0;
 
     let (passed, failed) = outputs.iter().fold((0, 0), |(passed, failed), out| {
-        out.check_error(&args, &mut retval);
+        if !out.is_valid() {
+            retval = INVALID_EXIT;
+
+            if let Some(fmt) = args.get_formatter() {
+                match fmt(out) {
+                    Ok(out) => eprintln!("{}", out),
+                    Err(e) => eprintln!("error when formatting output: {:?}", e),
+                }
+            }
+        }
 
         match out.exit_code().eq() {
             true => (passed + 1, failed),

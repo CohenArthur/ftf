@@ -11,8 +11,6 @@ use crate::exp_got::ExpGot;
 use colored::Colorize;
 use serde::Serialize;
 
-pub static INVALID_EXIT: i32 = 1;
-
 #[derive(Debug, Serialize)]
 /// Output structure, contains what was expected and what has been output by the
 /// command
@@ -53,7 +51,7 @@ impl Output {
         out
     }
 
-    fn valid(&self) -> bool {
+    pub fn is_valid(&self) -> bool {
         self.exit_code().eq() && self.stdout.eq() && self.stderr.eq() && self.time.eq()
     }
 
@@ -63,15 +61,6 @@ impl Output {
     ///
     /// In case of KO, the complete output will be dumped using the format passed
     /// to `ft` with the `-o|--output` argument
-    pub fn check_error(&self, args: &Args, retval: &mut i32) {
-        if !self.valid() {
-            *retval = INVALID_EXIT;
-            if let Some(fmt) = args.get_formatter() {
-                // FIXME: No unwrap
-                eprintln!("{}", fmt(self).unwrap());
-            }
-        }
-    }
 
     pub fn exit_code(&self) -> &ExpGot<i32> {
         &self.exit_code
