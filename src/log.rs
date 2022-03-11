@@ -7,7 +7,7 @@ use std::io::{stdout, Write};
 use crate::error::Error;
 
 pub fn running(test_name: &'_ str) -> Result<(), Error> {
-    print!("[{}] Running test: {}", "RUN".yellow().blink(), test_name);
+    print!("{} {}", "*".yellow().blink(), test_name);
     stdout().lock().flush()?;
 
     Ok(())
