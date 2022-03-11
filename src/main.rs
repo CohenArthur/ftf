@@ -3,6 +3,7 @@ mod error;
 mod exp_got;
 mod input;
 mod launcher;
+mod log;
 mod output;
 mod scheduler;
 

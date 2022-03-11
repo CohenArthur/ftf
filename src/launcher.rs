@@ -9,6 +9,7 @@ use wait_timeout::ChildExt;
 
 use crate::error::Error;
 use crate::exp_got::ExpGot;
+use crate::log;
 use crate::output::Output;
 use crate::INVALID_EXIT;
 
@@ -56,6 +57,8 @@ impl Launcher {
 
     pub fn run(&self) -> Result<Output, Error> {
         let start = Instant::now();
+
+        log::running(&self.name)?;
 
         let mut child = Command::new(self.binary())
             .args(self.args())

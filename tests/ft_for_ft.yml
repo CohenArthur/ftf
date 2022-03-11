@@ -16,3 +16,9 @@ tests:
         - "-f"
         - "./tests/fixtures/yaml/invalid_echo.yaml"
       exit_code: 1
+
+    - name: "Long tests"
+      binary: "sleep"
+      args:
+        - "3"
+      exit_code: 0
