@@ -32,13 +32,24 @@ impl Output {
         stderr: ExpGot<String>,
         time: ExpGot<Duration>,
     ) -> Output {
-        Output {
+        let out = Output {
             name,
             exit_code,
             stdout,
             stderr,
             time,
+        };
+
+        // Log the result when creating the output
+        let mut res_string = "OK".green();
+
+        if !out.exit_code.eq() {
+            res_string = "KO".red();
         }
+
+        println!("[{}] {}", res_string, out.name);
+
+        out
     }
 
     fn valid(&self) -> bool {
@@ -57,18 +68,12 @@ impl Output {
     ///
     /// In case of KO, the complete output will be dumped using the format passed
     /// to `ft` with the `-o|--output` argument
-    pub fn display(&self, args: &Args, retval: &mut i32) {
-        let mut res_string = "OK".green();
-        let is_valid = self.valid();
-
-        if !is_valid {
+    pub fn check_error(&self, args: &Args, retval: &mut i32) {
+        if !self.valid() {
             *retval = INVALID_EXIT;
-            res_string = "KO".red();
-        }
-
-        println!("[{}] {}", res_string, self.name);
-        if !is_valid {
-            eprintln!("{}", args.get_formatter()(self));
+            if let Some(fmt) = args.get_formatter() {
+                eprintln!("{}", fmt(self));
+            }
         }
     }
 

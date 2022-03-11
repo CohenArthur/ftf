@@ -22,20 +22,15 @@ impl Args {
         Args::from_args()
     }
 
-    pub fn get_formatter(&self) -> &dyn Fn(&Output) -> String {
-        match self.output.as_ref() {
-            Some(s) => match s.as_str() {
-                "yaml" => &Yaml::fmt,
+    pub fn get_formatter(&self) -> Option<impl Fn(&Output) -> String> {
+        self.output.as_ref().map(|out| match out.as_str() {
+            "yaml" => &Yaml::fmt,
 
-                // On invalid strings, use YAML but notify it
-                s => {
-                    eprintln!("Invalid formatter used: {}. Using YAML", s);
-                    &Yaml::fmt
-                }
-            },
-
-            // Default formatter is YAML
-            None => &Yaml::fmt,
-        }
+            // On invalid strings, use YAML but notify it
+            s => {
+                eprintln!("Invalid formatter used: {}. Defaulting to YAML", s);
+                &Yaml::fmt
+            }
+        })
     }
 }
