@@ -14,7 +14,7 @@ pub struct Args {
     pub files: Vec<PathBuf>,
 
     // FIXME: Really add JSON and TOML format
-    #[structopt(short, long, help = "Output format (yaml, json, toml)")]
+    #[structopt(short, long, help = "Output format (yaml)")]
     pub output: Option<String>,
 }
 
