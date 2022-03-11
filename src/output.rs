@@ -6,8 +6,8 @@ use std::time::Duration;
 
 use crate::error::Error;
 use crate::exp_got::ExpGot;
+use crate::log;
 
-use colored::Colorize;
 use serde::Serialize;
 
 #[derive(Debug, Serialize)]
@@ -38,14 +38,11 @@ impl Output {
             time,
         };
 
-        // Log the result when creating the output
-        let mut res_string = "OK".green();
-
-        if !out.exit_code.eq() {
-            res_string = "KO".red();
+        if out.exit_code.eq() {
+            log::success(&out.name);
+        } else {
+            log::failure(&out.name);
         }
-
-        println!("[{}] {}", res_string, out.name);
 
         out
     }
