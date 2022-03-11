@@ -13,6 +13,8 @@ use std::fs;
 use std::path::Path;
 use std::time::Duration;
 
+use rayon::prelude::*;
+
 pub struct Scheduler {
     launchers: Vec<Launcher>,
 }
@@ -54,7 +56,7 @@ impl Scheduler {
 
     pub fn run(self) -> Result<Vec<Output>, Error> {
         self.launchers
-            .into_iter()
+            .into_par_iter()
             .map(|launcher| launcher.run())
             .collect()
     }
