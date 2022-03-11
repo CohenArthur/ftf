@@ -1,5 +1,6 @@
 //! FtArgs handle argument parsing for the `ft` binary
 
+use crate::error::Error;
 use crate::output::{FtOutput, Output};
 use crate::yaml::Yaml;
 
@@ -13,7 +14,7 @@ pub struct Args {
     pub files: Vec<PathBuf>,
 
     // FIXME: Really add JSON and TOML format
-    #[structopt(short, long, help = "Output format (yaml, json, toml)")]
+    #[structopt(short, long, help = "Output format (yaml)")]
     pub output: Option<String>,
 }
 
@@ -22,7 +23,7 @@ impl Args {
         Args::from_args()
     }
 
-    pub fn get_formatter(&self) -> Option<impl Fn(&Output) -> String> {
+    pub fn get_formatter(&self) -> Option<impl Fn(&Output) -> Result<String, Error>> {
         self.output.as_ref().map(|out| match out.as_str() {
             "yaml" => &Yaml::fmt,
 
