@@ -7,6 +7,7 @@ use std::time::{Duration, Instant};
 
 use wait_timeout::ChildExt;
 
+use crate::error::Error;
 use crate::exp_got::ExpGot;
 use crate::output::{Output, INVALID_EXIT};
 
@@ -15,7 +16,7 @@ static MAX_SECS: u64 = u64::MAX;
 pub struct Launcher {
     name: String,
     binary: String,
-    args: Option<Vec<String>>,
+    args: Vec<String>,
 
     stdout: Option<String>,
     stderr: Option<String>,
@@ -27,7 +28,7 @@ impl Launcher {
     pub fn new(
         name: String,
         binary: String,
-        args: Option<Vec<String>>,
+        args: Vec<String>,
         stdout: Option<String>,
         stderr: Option<String>,
         exit_code: Option<i32>,
@@ -48,32 +49,39 @@ impl Launcher {
         &self.binary
     }
 
-    fn args(&self) -> Option<&Vec<String>> {
+    fn args(&self) -> &Vec<String> {
         self.args.as_ref()
     }
 
-    pub fn run(&self) -> Result<Output, std::io::Error> {
+    pub fn run(&self) -> Result<Output, Error> {
         let start = Instant::now();
 
         let mut child = Command::new(self.binary())
-            .args(self.args().unwrap_or(&vec![]))
+            .args(self.args())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .spawn()?;
 
-        let status_code =
-            match child.wait_timeout(self.timeout.unwrap_or(Duration::from_secs(MAX_SECS)))? {
-                Some(status) => status.code(),
-                None => {
-                    child.kill()?;
-                    child.wait()?.code()
-                }
-            };
+        let status_code = match child.wait_timeout(
+            self.timeout
+                .unwrap_or_else(|| Duration::from_secs(MAX_SECS)),
+        )? {
+            Some(status) => status.code(),
+            None => {
+                child.kill()?;
+                child.wait()?.code()
+            }
+        };
 
         let (mut out, mut err) = (String::new(), String::new());
 
-        child.stdout.unwrap().read_to_string(&mut out)?;
-        child.stderr.unwrap().read_to_string(&mut err)?;
+        if let Some(mut stdout) = child.stdout {
+            stdout.read_to_string(&mut out)?;
+        }
+
+        if let Some(mut stderr) = child.stderr {
+            stderr.read_to_string(&mut err)?;
+        }
 
         // FIXME: No clone
         Ok(Output::new(

@@ -5,6 +5,7 @@
 use std::time::Duration;
 
 use crate::args::Args;
+use crate::error::Error;
 use crate::exp_got::ExpGot;
 
 use colored::Colorize;
@@ -53,13 +54,7 @@ impl Output {
     }
 
     fn valid(&self) -> bool {
-        let mut retval = self.exit_code.expected.unwrap_or(0) == self.exit_code.got;
-
-        retval = if retval { self.stdout.eq() } else { retval };
-        retval = if retval { self.stderr.eq() } else { retval };
-        retval = if retval { self.time.eq() } else { retval };
-
-        retval
+        self.exit_code().eq() && self.stdout.eq() && self.stderr.eq() && self.time.eq()
     }
 
     /// Display the output of a command accordingly, with the following format:
@@ -72,7 +67,8 @@ impl Output {
         if !self.valid() {
             *retval = INVALID_EXIT;
             if let Some(fmt) = args.get_formatter() {
-                eprintln!("{}", fmt(self));
+                // FIXME: No unwrap
+                eprintln!("{}", fmt(self).unwrap());
             }
         }
     }
@@ -104,5 +100,5 @@ impl Output {
 
 pub trait FtOutput {
     /// Format the Output results to a String
-    fn fmt(data: &Output) -> String;
+    fn fmt(data: &Output) -> Result<String, Error>;
 }

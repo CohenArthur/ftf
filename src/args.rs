@@ -1,5 +1,6 @@
 //! FtArgs handle argument parsing for the `ft` binary
 
+use crate::error::Error;
 use crate::output::{FtOutput, Output};
 use crate::yaml::Yaml;
 
@@ -22,7 +23,7 @@ impl Args {
         Args::from_args()
     }
 
-    pub fn get_formatter(&self) -> Option<impl Fn(&Output) -> String> {
+    pub fn get_formatter(&self) -> Option<impl Fn(&Output) -> Result<String, Error>> {
         self.output.as_ref().map(|out| match out.as_str() {
             "yaml" => &Yaml::fmt,
 

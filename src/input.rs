@@ -2,6 +2,8 @@
 //! to conditions that `ft` understands. Add any language by implementing
 //! the Inputter trait
 
+use crate::error::Error;
+
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -21,5 +23,5 @@ pub struct Input {
 }
 
 pub trait Inputter {
-    fn parse(data: &str) -> Input;
+    fn parse(data: &str) -> Result<Input, Error>;
 }

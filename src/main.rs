@@ -1,4 +1,5 @@
 mod args;
+mod error;
 mod exp_got;
 mod input;
 mod launcher;
@@ -12,11 +13,11 @@ use colored::Colorize;
 use args::Args;
 use scheduler::Scheduler;
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let args = Args::collect();
 
     let scheduler = Scheduler::from_args(&args);
-    let outputs = scheduler.run();
+    let outputs = scheduler?.run()?;
 
     let mut retval = 0;
 
