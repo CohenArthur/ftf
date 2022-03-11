@@ -28,9 +28,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run Unit Tests and Documentation examples
+    - name: Run Tests and Documentation examples
       run: |
           cargo test
-    - name: Run Functional Tests
-      run: |
           cargo run -- -f tests/ft_for_ft.yml
