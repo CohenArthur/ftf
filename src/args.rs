@@ -16,6 +16,14 @@ pub struct Args {
     // FIXME: Really add JSON and TOML format
     #[structopt(short, long, help = "Output format (yaml)")]
     pub output: Option<String>,
+
+    #[structopt(
+        short,
+        long,
+        default_value("1"),
+        help = "Amount of threads to use concurrently"
+    )]
+    pub jobs: usize,
 }
 
 impl Args {

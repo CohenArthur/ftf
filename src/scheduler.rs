@@ -13,7 +13,11 @@ use std::fs;
 use std::path::Path;
 use std::time::Duration;
 
+use rayon::prelude::*;
+use rayon::ThreadPoolBuilder;
+
 pub struct Scheduler {
+    threads: usize,
     launchers: Vec<Launcher>,
 }
 
@@ -49,13 +53,20 @@ impl Scheduler {
             }
         }
 
-        Ok(Scheduler { launchers })
+        Ok(Scheduler {
+            threads: args.jobs,
+            launchers,
+        })
     }
 
-    pub fn run(&self) -> Result<Vec<Output>, Error> {
-        self.launchers
-            .iter()
-            .map(|launcher| launcher.run())
-            .collect()
+    pub fn run(self) -> Result<Vec<Output>, Error> {
+        let pool = ThreadPoolBuilder::new().num_threads(self.threads).build()?;
+
+        pool.install(move || {
+            self.launchers
+                .into_par_iter()
+                .map(|launcher| launcher.run())
+                .collect()
+        })
     }
 }
