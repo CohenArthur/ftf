@@ -80,14 +80,16 @@ impl Launcher {
         let (mut out, mut err) = (String::new(), String::new());
 
         if let Some(mut stdout) = child.stdout {
-            stdout.read_to_string(&mut out)?;
+            if stdout.read_to_string(&mut out).is_err() {
+                out.push_str("stdout does not contain valid UTF-8 - refusing to handle it");
+            }
         }
-
         if let Some(mut stderr) = child.stderr {
-            stderr.read_to_string(&mut err)?;
+            if stderr.read_to_string(&mut err).is_err() {
+                out.push_str("stderr does not contain valid UTF-8 - refusing to handle it");
+            }
         }
 
-        // FIXME: No clone
         Ok(Output::new(
             self.name,
             ExpGot::new(

@@ -19,8 +19,8 @@ const INVALID_EXIT: i32 = 1;
 fn main() -> anyhow::Result<()> {
     let args = Args::collect();
 
-    let scheduler = Scheduler::from_args(&args);
-    let outputs = scheduler?.run()?;
+    let scheduler = Scheduler::from_args(&args)?;
+    let outputs = scheduler.run()?;
 
     let mut retval = 0;
 
