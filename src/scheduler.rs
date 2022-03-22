@@ -4,13 +4,12 @@
 use crate::error::Error;
 use crate::yaml::Yaml;
 
-use crate::args::Args;
 use crate::input::{Input, Inputter};
 use crate::launcher::Launcher;
 use crate::output::Output;
 
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 use rayon::prelude::*;
@@ -33,10 +32,10 @@ impl Scheduler {
         }
     }
 
-    pub fn from_args(args: &Args) -> Result<Scheduler, Error> {
+    pub fn new(files: &[PathBuf], threads: usize) -> Result<Scheduler, Error> {
         let mut launchers = Vec::new();
 
-        for file in &args.files {
+        for file in files {
             let input = Scheduler::dispatch_file(file)?;
 
             for test_case in input.tests {
@@ -53,10 +52,7 @@ impl Scheduler {
             }
         }
 
-        Ok(Scheduler {
-            threads: args.jobs,
-            launchers,
-        })
+        Ok(Scheduler { threads, launchers })
     }
 
     pub fn run(self) -> Result<Vec<Output>, Error> {
