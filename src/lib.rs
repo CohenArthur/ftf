@@ -1,5 +1,5 @@
 pub mod error;
-pub mod exp_got;
+pub mod expected;
 pub mod input;
 pub mod launcher;
 mod log;

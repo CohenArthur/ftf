@@ -5,7 +5,7 @@
 use std::time::Duration;
 
 use crate::error::Error;
-use crate::exp_got::ExpGot;
+use crate::expected::{ExpGot, ExpString};
 use crate::log;
 
 use serde::Serialize;
@@ -16,8 +16,8 @@ use serde::Serialize;
 pub struct Output {
     name: String,
     exit_code: ExpGot<i32>,
-    stdout: ExpGot<String>,
-    stderr: ExpGot<String>,
+    stdout: ExpString,
+    stderr: ExpString,
     time: ExpGot<Duration>,
 }
 
@@ -26,8 +26,8 @@ impl Output {
     pub fn new(
         name: String,
         exit_code: ExpGot<i32>,
-        stdout: ExpGot<String>,
-        stderr: ExpGot<String>,
+        stdout: ExpString,
+        stderr: ExpString,
         time: ExpGot<Duration>,
     ) -> Output {
         let out = Output {
@@ -48,7 +48,7 @@ impl Output {
     }
 
     pub fn is_valid(&self) -> bool {
-        self.exit_code().eq() && self.stdout.eq() && self.stderr.eq() && self.time.eq()
+        self.exit_code().eq() && self.stdout.matches() && self.stderr.matches() && self.time.eq()
     }
 
     /// Display the output of a command accordingly, with the following format:

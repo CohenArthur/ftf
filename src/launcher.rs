@@ -8,7 +8,7 @@ use std::time::{Duration, Instant};
 use wait_timeout::ChildExt;
 
 use crate::error::Error;
-use crate::exp_got::ExpGot;
+use crate::expected::{ExpGot, ExpString};
 use crate::log;
 use crate::output::Output;
 use crate::INVALID_EXIT;
@@ -96,8 +96,8 @@ impl Launcher {
                 Some(self.exit_code.unwrap_or(0)),
                 status_code.unwrap_or(INVALID_EXIT),
             ),
-            ExpGot::new(self.stdout, out),
-            ExpGot::new(self.stderr, err),
+            ExpString::new(self.stdout, out),
+            ExpString::new(self.stderr, err),
             ExpGot::new(self.timeout, start.elapsed()),
         ))
     }
