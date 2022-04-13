@@ -22,3 +22,9 @@ tests:
       args:
         - "3"
       exit_code: 0
+
+    - name: "stdout is contains() and not eq()"
+      binary: "echo"
+      args:
+        - "some long string"
+      stdout: "long"
