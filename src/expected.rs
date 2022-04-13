@@ -6,8 +6,8 @@ use serde::Serialize;
 
 #[derive(Debug, Serialize)]
 pub struct ExpGot<T: PartialEq> {
-    pub expected: Option<T>,
-    pub got: T,
+    pub(crate) expected: Option<T>,
+    pub(crate) got: T,
 }
 
 impl<T: PartialEq> ExpGot<T> {
@@ -20,6 +20,27 @@ impl<T: PartialEq> ExpGot<T> {
     pub fn eq(&self) -> bool {
         match &self.expected {
             Some(s) => s == &self.got,
+            None => true,
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub struct ExpString {
+    pub(crate) expected: Option<String>,
+    pub(crate) got: String,
+}
+
+impl ExpString {
+    /// Create a new ExpString
+    pub fn new(expected: Option<String>, got: String) -> ExpString {
+        ExpString { expected, got }
+    }
+
+    /// Check if the expected content are contained in the output
+    pub fn matches(&self) -> bool {
+        match &self.expected {
+            Some(msg) => self.got.contains(msg),
             None => true,
         }
     }
