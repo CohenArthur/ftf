@@ -1,3 +1,4 @@
+[![Crates.io](https://img.shields.io/crates/v/ftf.svg)](https://crates.io/crates/ftf)
 # ft
 
 Parallel Functional Testing framework, written in Rust
