@@ -1,4 +1,3 @@
-use colored::Colorize;
 use ftf::error::Error;
 use ftf::output::{FtOutput, Output};
 use ftf::scheduler::Scheduler;
@@ -12,11 +11,10 @@ use std::path::PathBuf;
 pub struct Args {
     #[structopt(short, long, help = "Files containing the test cases")]
     pub files: Vec<PathBuf>,
-
     // FIXME: Really add JSON and TOML format
+    // FIXME: Switch this to an enum
     #[structopt(short, long, help = "Output format (yaml)")]
     pub output: Option<String>,
-
     #[structopt(
         short,
         long,
@@ -24,6 +22,12 @@ pub struct Args {
         help = "Amount of threads to use concurrently"
     )]
     pub jobs: usize,
+    #[structopt(
+        long,
+        default_value("%t tests: %p tests passed, %f tests failed"),
+        help = "Format string to print results"
+    )]
+    pub result_fmt: String,
 }
 
 impl Args {
@@ -65,12 +69,12 @@ fn main() -> anyhow::Result<()> {
         }
     });
 
-    println!(
-        "{} tests: {} tests passed, {} tests failed",
-        passed + failed,
-        passed.to_string().green(),
-        failed.to_string().red()
-    );
+    let fmt = args.result_fmt;
+    let fmt = fmt.replace("%t", &(passed + failed).to_string());
+    let fmt = fmt.replace("%p", &passed.to_string());
+    let fmt = fmt.replace("%f", &failed.to_string());
+
+    println!("{}", fmt);
 
     std::process::exit(retval);
 }
