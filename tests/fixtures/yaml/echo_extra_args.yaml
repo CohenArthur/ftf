@@ -1,0 +1,6 @@
+tests:
+  - name: "Simple echo needs extra arg 'ftf'"
+    binary: "echo"
+    args:
+        - "-n"
+    stdout: "ftf"

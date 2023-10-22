@@ -1,6 +1,6 @@
 use ftf::error::Error;
 use ftf::output::{FtOutput, Output};
-use ftf::scheduler::Scheduler;
+use ftf::scheduler::{Context, Scheduler};
 use ftf::yaml::Yaml;
 use ftf::INVALID_EXIT;
 use structopt::StructOpt;
@@ -28,6 +28,11 @@ pub struct Args {
         help = "Format string to print results"
     )]
     pub result_fmt: String,
+    #[structopt(
+        long,
+        // FIXME: Add help
+    )]
+    pub extra_arg: Vec<String>,
 }
 
 impl Args {
@@ -46,7 +51,9 @@ impl Args {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::from_args();
-    let scheduler = Scheduler::new(args.files.as_slice(), args.jobs);
+
+    let context = Context::new(args.files.as_slice(), args.jobs, args.extra_arg.as_slice());
+    let scheduler = Scheduler::new(context);
     let outputs = scheduler?.run()?;
 
     let mut retval = 0;

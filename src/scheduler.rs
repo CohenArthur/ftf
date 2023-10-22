@@ -15,6 +15,26 @@ use std::time::Duration;
 use rayon::prelude::*;
 use rayon::ThreadPoolBuilder;
 
+pub struct Context<'ctx> {
+    files: &'ctx [PathBuf],
+    threads: usize,
+    extra_args: &'ctx [String],
+}
+
+impl<'ctx> Context<'ctx> {
+    pub fn new(
+        files: &'ctx [PathBuf],
+        threads: usize,
+        extra_args: &'ctx [String],
+    ) -> Context<'ctx> {
+        Context {
+            files,
+            threads,
+            extra_args,
+        }
+    }
+}
+
 pub struct Scheduler {
     threads: usize,
     launchers: Vec<Launcher>,
@@ -32,18 +52,21 @@ impl Scheduler {
         }
     }
 
-    pub fn new(files: &[PathBuf], threads: usize) -> Result<Scheduler, Error> {
+    pub fn new(ctx: Context<'_>) -> Result<Scheduler, Error> {
         let mut launchers = Vec::new();
 
-        for file in files {
+        for file in ctx.files {
             let input = Scheduler::dispatch_file(file)?;
 
             for test_case in input.tests {
+                // If there are no arguments, pass an empty vector
+                let mut args = test_case.args.unwrap_or_default();
+                args.append(&mut ctx.extra_args.to_vec());
+
                 launchers.push(Launcher::new(
                     test_case.name,
                     test_case.binary,
-                    // If there are no arguments, pass an empty vector
-                    test_case.args.unwrap_or_default(),
+                    args,
                     test_case.stdout,
                     test_case.stderr,
                     test_case.exit_code.map(|v| v as i32),
@@ -52,7 +75,10 @@ impl Scheduler {
             }
         }
 
-        Ok(Scheduler { threads, launchers })
+        Ok(Scheduler {
+            threads: ctx.threads,
+            launchers,
+        })
     }
 
     pub fn run(self) -> Result<Vec<Output>, Error> {

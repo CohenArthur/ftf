@@ -28,3 +28,11 @@ tests:
       args:
         - "some long string"
       stdout: "long"
+
+    - name: "Always pass extra arguments"
+      binary: "./target/debug/ftf"
+      args:
+        - "--extra-arg"
+        - "ftf"
+        - "-f"
+        - "./tests/fixtures/yaml/echo_extra_args.yaml"
